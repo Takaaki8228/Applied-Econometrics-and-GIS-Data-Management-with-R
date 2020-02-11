@@ -35,7 +35,7 @@ tm_shape(bf.shape) +
             main.title = "",
             main.title.size = 2.0, 
             main.title.position = c("left","top"),
-            fontfamily = "Times", 
+            # fontfamily = "Times", 
             legend.title.size = 1.6,
             legend.text.size = 1.0,
             legend.position = c("left","top")) + 
