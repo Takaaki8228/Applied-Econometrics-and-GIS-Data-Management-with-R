@@ -1,3 +1,9 @@
+# write basic data creaning code 
+# with the corresponding stata code
+# stargazer and other package would be good to use 
+# Rmd would also be prefereed.
+
+
 # Data From AER: Applied Econometrics with R (Version 1.2-7)
 # https://CRAN.R-project.org/package=AER
 
