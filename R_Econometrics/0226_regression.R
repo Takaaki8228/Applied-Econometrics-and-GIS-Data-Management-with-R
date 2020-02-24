@@ -4,6 +4,7 @@ library(haven)               # for haven::read_dta
 library(tidyverse)
 library(skimr)
 library(estimatr)
+library(stargazer)
 
 dhs <- haven::read_dta("BFKR62FL.dta")  # when inporting a stata file directly
 
@@ -58,10 +59,10 @@ dhs <- dhs %>%
 
 
 
-# use robust SE like "~, r" in Stata
+
 # --------------------------------------------
 # reg haz high_educ second_educ prim_educ richest richer // 
-# middle poorer hhsize ageHH n_of_child femaleHH age, r
+# middle poorer hhsize ageHH n_of_child femaleHH age
 # --------------------------------------------
 
 
@@ -75,9 +76,11 @@ reg1 <- lm(
 # present the results 
 # (obviously?) the result is identical to equation (1) in Stata
 summary(reg1) 
+stargazer(reg1, type = "text")
 
 
 # equation (2)
+# use robust SE like "~, r" in Stata
 reg2 <- estimatr::lm_robust(
   haz ~ high_educ + second_educ + prim_educ + richest +
     richer + middle + poorer + hhsize + ageHH + 
@@ -87,7 +90,7 @@ reg2 <- estimatr::lm_robust(
 
 # exactly same as the Stata result in equation (2) in do file
 summary(reg2) 
-
+coef(summary(reg2))
 
 
 # equation (3)
@@ -103,4 +106,7 @@ reg3 <- estimatr::lm_robust(
 # coefs are exactly same as in Stata,
 # but SEs are slightly different
 summary(reg3) 
+
+
+
 
