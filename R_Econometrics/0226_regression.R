@@ -3,7 +3,7 @@
 library(haven)               # for haven::read_dta
 library(tidyverse)
 library(skimr)
-library(estimatr)
+library(estimatr) 
 library(stargazer)
 
 setwd("~/Documents/GitHub/gis-data/health_data")
