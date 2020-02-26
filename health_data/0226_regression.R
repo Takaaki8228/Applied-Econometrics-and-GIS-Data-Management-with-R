@@ -138,8 +138,8 @@ dhs <- dhs %>%
   dplyr::select(b8, hw5, hw8, hw11, v001, v024, 
                 v106, v136, v151, v152, v218, v190) 
   
-# in Stata: table v106 
-dhs %>% dplyr::count(v106)
+# in Stata: table v106 (count is from dplyr)
+dhs %>% count(v106)
 
 
 # create dummy variables 
