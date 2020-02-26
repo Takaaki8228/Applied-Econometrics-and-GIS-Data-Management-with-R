@@ -95,4 +95,4 @@ reg haz high_educ second_educ prim_educ richest richer middle poorer hhsize ageH
 * equation (3)
 xtreg haz high_educ second_educ prim_educ richest richer middle poorer hhsize ageHH n_of_child femaleHH age, fe i(cluster) cluster(cluster)
 
-
+* i.cluster

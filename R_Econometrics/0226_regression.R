@@ -1,4 +1,4 @@
-# we use the DHS for this practice
+# We use the DHS for this practice
 
 library(haven)               # for haven::read_dta
 library(tidyverse)
@@ -6,13 +6,19 @@ library(skimr)
 library(estimatr)
 library(stargazer)
 
+setwd("~/Documents/GitHub/gis-data/health_data")
 dhs <- haven::read_dta("BFKR62FL.dta")  # when inporting a stata file directly
 
 dhs <- dhs %>%
   dplyr::select(b8, hw5, hw8, hw11, v001, v024, 
                 v106, v136, v151, v152, v218, v190)
 
-# create dummy variables 
+# create dummy variables
+
+dhs %>% dplyr::count(v106)
+dhs %>% count(v151)
+dhs %>% count(v190)
+
 
 dhs <- dhs %>%
   dplyr::mutate(high_educ = ifelse(v106 == 3,1,0),
@@ -26,6 +32,8 @@ dhs <- dhs %>%
                 middle = ifelse(v190 == 3,1,0),
                 poorer = ifelse(v190 == 2,1,0)
                 )
+            
+dhs %>% count(prim_educ)
 
 skim(dhs) 
 
@@ -77,6 +85,8 @@ reg1 <- lm(
 # (obviously?) the result is identical to equation (1) in Stata
 summary(reg1) 
 stargazer(reg1, type = "text")
+stargazer(reg1)
+
 
 
 # equation (2)
@@ -169,5 +179,3 @@ dhs %>% count(high_educ, second_educ, prim_educ)
 # we see that last five obs have NA in education dummies
 dhs <- dhs %>%
   dplyr::arrange(high_educ)
-
-

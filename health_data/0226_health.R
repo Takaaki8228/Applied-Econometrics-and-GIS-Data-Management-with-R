@@ -64,6 +64,9 @@ health <- health %>%
                    waz = mean(waz),
                    whz = mean(whz))
 
+# in Stata: table waz
+health %>% dplyr::count(waz)
+
 # we actually obtained the exact same data 
 # as we can obtain from 0226_data_gen.do in Stata!!!
 # (note) the sign is opposite since we used as.data.frame
@@ -85,7 +88,6 @@ head(bf.shape.1)
 bf.shape.1 <- bf.shape.1 %>%
   dplyr::select(NAME_1, geometry) %>%
   dplyr::rename(region = NAME_1)
-
 
 # we see that three regions have different names in data
 health$region
@@ -131,7 +133,7 @@ whz <- ggplot(region.merged) +
   theme_void()                    # while background
 
 library(ggpubr)
-three.maps <- ggarrange(haz, waz, whz)
+three.maps <- ggarrange(haz, waz, whz,)
 setwd("~/Documents/GitHub/gis-data/health_data")
 ggsave("three_maps.jpeg", plot = three.maps)
 
