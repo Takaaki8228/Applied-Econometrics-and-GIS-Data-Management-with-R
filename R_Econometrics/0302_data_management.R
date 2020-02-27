@@ -122,4 +122,3 @@ house.mis <- house.mis %>%
                    funs(if_else(is.na(.), mean(., na.rm = T), .)))
 
 skim(house.mis) 
-
