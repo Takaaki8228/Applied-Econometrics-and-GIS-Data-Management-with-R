@@ -4,12 +4,10 @@
 
 install.packages("mlbench")
 install.packages("missForest")
-# install.packages("VIM")
 
 library(tidyverse)
 library(skimr)
 library(missForest)
-# library(VIM)
 library(mlbench)
 
 # import data from mlbench
