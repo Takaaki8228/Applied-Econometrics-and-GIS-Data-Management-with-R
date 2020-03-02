@@ -6,11 +6,12 @@
 # Stata code that are the same operation are written in "###" columns
 # --------------------------------------------
 
+library(mlbench)
 
 data(BostonHousing, package = "mlbench")
 # https://www.rdocumentation.org/packages/mlbench/versions/2.1-1/topics/BostonHousing
 
-library(mlbench)
+
 library(tidyverse)
 library(skimr)
 
@@ -30,7 +31,7 @@ names(house)
 ### Stata: table chas
 # dplyr::count
 house %>% count(chas)
-house %>% count(access_road)
+house %>% count(rad)
 
 ### Stata: sum house
 # skimr::skim
@@ -44,7 +45,7 @@ skim(house, age, dis, ptratio)
 # dplyr::summarise
 house %>%
   summarise(age = mean(age),
-            ptratio = mean(ptratio),
+            ptratio = sd(ptratio),
             observation = dplyr::n()
             )
 
@@ -65,11 +66,10 @@ house %>%
 
 # dplyr::group_by
 house %>% 
-  group_by(dis) %>%
+  group_by(rad) %>%
   summarise_each(funs(n(), mean, sd, min, max), 
                  ptratio)
   
-
 
 
 
@@ -94,12 +94,20 @@ house <- house %>%
          race = b)
 
 
+house3 <- house
+ncol(house3)
+house3[,15] <- 0 
+
+house4 <- house[,"access_road"]
+
+x <- cbind(house3, house4)
 
 
 # dplyr::mutate
 # Add new variables 
 # Besides selecting sets of existing columns, add new columns (variables) with dplyr::mutate
-### Stata: gen high_access = 1 if access_road > 5
+### Stata: gen high_access = 1 if access_road >= 6
+#        : replace high_access = 0 if access_road < 6
 house <- house %>%
   mutate(high_access = ifelse(access_road >= 6,1,0))
 
