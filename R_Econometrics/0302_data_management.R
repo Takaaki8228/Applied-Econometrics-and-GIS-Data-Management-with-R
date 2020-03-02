@@ -158,7 +158,6 @@ house.mis <- house.mis %>%
   dplyr::filter(access_road == 4)
 
 
-
 # house.mis <- house.mis %>%
 #   dplyr::mutate_at(vars(crime_rate),
 #                    funs(if_else(is.na(.), mean(., na.rm = T), .)))
