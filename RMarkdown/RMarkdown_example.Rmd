@@ -1,0 +1,76 @@
+---
+title: 'Example'
+author: "Mariam Tanou"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+source('~/documents/GitHub/gis-data/R_Econometrics/.Rprofile')
+```
+
+# Title (level 1)
+
+This section we... 
+
+## Title (level 2)
+
+This subsection we...
+
+First we conduct regression without specifying the types of the standard error. 
+
+### Set Up Data
+```{r}
+data(CASchools)   
+
+# student teacher ratio
+CASchools$STR <- CASchools$students / CASchools$teachers       
+
+# average test score
+CASchools$score <- (CASchools$read + CASchools$math)/2
+```
+
+
+This is same as: "reg score STR" in Stata. In R language we always need to specify which data will be used. 
+```{r}
+fit1 <- lm(score ~ STR, data = CASchools) 
+summary(fit1) 
+```
+
+
+Present the equations. 
+```{r, results='asis'}
+equatiomatic::extract_eq(fit1)
+equatiomatic::extract_eq(fit1, use_coefs = TRUE)
+```
+
+We can include further controls in the equation. 
+
+```{r}
+fit2 <- lm(score ~ STR + english + income, data = CASchools) 
+summary(fit2) 
+```
+
+
+```{r, results='asis'}
+equatiomatic::extract_eq(fit2)
+equatiomatic::extract_eq(fit2, use_coefs = TRUE)
+```
+
+
+
+## Cluster Robust Standard Error
+
+In empirical work we always deal with correlation within a group by clustering SE. Above lm code conduct regression under the assumption of homoskedasticity just like reg and without robust option in Stata. We now use the estimatr package. 
+
+
+```{r}
+fit3 <- estimatr::lm_robust(score ~ STR + english + income,
+                            clusters = county, se_type = "stata",
+                            data = CASchools) 
+summary(fit3) 
+```
+
+
+We estimated the same model as fit2, but clustered SE at the county level (we do not know whether this is the best unit). Clustered SE for STR increased from 0.277 to 0.299. 
+
