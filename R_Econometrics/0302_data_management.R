@@ -20,7 +20,6 @@ names(house)
 skim(house)
 skim(house) %>% summary()
 skim(house, age, dis, ptratio)
-# View(house)
 
 
 
@@ -46,12 +45,15 @@ skim(house)
 is.numeric(house$river)
 house$river
 
-# sometimes when factor variable is converted into 
+# (sometimes) when factor variable is converted into 
 # numeric, [0,1] variable becomes [1,2]. 
-# to account for this, we first convert into 
-# character, then convert to numeric. 
+# to account for this problem, we first convert variable  
+# into character, then convert to numeric. 
 house <- house %>% 
   dplyr::mutate(river = as.numeric(as.character(river)))
+
+
+
 
 
 
@@ -78,7 +80,7 @@ skim(house.mis)
 # impute missing in crime_rate
 house.mis <- house.mis %>%
   dplyr::mutate_at(vars(crime_rate),
-            funs(if_else(is.na(.), mean(., na.rm = T), .)))
+                   funs(if_else(is.na(.), mean(., na.rm = T), .)))
 
 skim(house.mis) 
 # missings in crime_rate is imputed, 
@@ -92,6 +94,7 @@ house.mis <- house.mis %>%
 
 skim(house.mis) 
 # as in crime_rate, mean value is kept at previous level!
+
 
 
 
@@ -120,3 +123,26 @@ house.mis <- house.mis %>%
                    funs(if_else(is.na(.), mean(., na.rm = T), .)))
 
 skim(house.mis) 
+
+
+
+
+
+
+
+
+
+# --------------------------------------------
+# we can do above work at once!
+# --------------------------------------------
+
+# if we put minus, all variables except crime_rate 
+# will be imputed, keeping their mean values constant.
+
+# create house.mis again with 10% missing values 
+house.mis <- missForest::prodNA(house, noNA = 0.1)
+
+house.mis <- house.mis %>%
+  dplyr::mutate_at(vars(-crime_rate),
+                   funs(if_else(is.na(.), mean(., na.rm = T), .)))
+
