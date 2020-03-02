@@ -42,6 +42,7 @@ house <- house %>%
 skim(house)
 
 is.numeric(house$river)
+class(house$river)
 house$river
 
 # (sometimes) when factor variable is converted into 
@@ -50,8 +51,6 @@ house$river
 # into character, then convert to numeric. 
 house <- house %>% 
   dplyr::mutate(river = as.numeric(as.character(river)))
-
-
 
 
 
@@ -138,10 +137,28 @@ skim(house.mis)
 # if we put minus, all variables except crime_rate 
 # will be imputed, keeping their mean values constant.
 
+set.seed(123)
+
 # create house.mis again with 10% missing values 
 house.mis <- missForest::prodNA(house, noNA = 0.1)
+
+is.na(house.mis$river)
+is.na(house.mis)
 
 house.mis <- house.mis %>%
   dplyr::mutate_at(vars(-crime_rate),
                    funs(if_else(is.na(.), mean(., na.rm = T), .)))
 
+# Stata: drop crime_rate == "NA"
+house.mis <- house.mis %>%
+  dplyr::filter(crime_rate != "NA")
+
+# Stata: keep access_road == 4
+house.mis <- house.mis %>%
+  dplyr::filter(access_road == 4)
+
+
+
+# house.mis <- house.mis %>%
+#   dplyr::mutate_at(vars(crime_rate),
+#                    funs(if_else(is.na(.), mean(., na.rm = T), .)))
