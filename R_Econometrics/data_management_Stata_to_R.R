@@ -1,4 +1,4 @@
-# summary of basic data management: Stata to R (mostly using dplyr)
+# summary of basic data management: Stata to R (using dplyr)
 
 
 # --------------------------------------------
@@ -75,7 +75,7 @@ house %>%
 
 
 # --------------------------------------------
-# generate variables, drop, etc
+# generate variables, drop, keep
 # --------------------------------------------
 
 # dplyr::rename
@@ -93,29 +93,29 @@ house <- house %>%
          access_road = rad, 
          race = b)
 
-
-house3 <- house
-ncol(house3)
-house3[,15] <- 0 
-
-house4 <- house[,"access_road"]
-
-x <- cbind(house3, house4)
+house.renamed <- house  # save as new name for the next practice 
 
 
 # dplyr::mutate
 # Add new variables 
 # Besides selecting sets of existing columns, add new columns (variables) with dplyr::mutate
 ### Stata: gen high_access = 1 if access_road >= 6
-#        : replace high_access = 0 if access_road < 6
+###      : replace high_access = 0 if access_road < 6
 house <- house %>%
   mutate(high_access = ifelse(access_road >= 6,1,0))
+
+### Stata: gen highest_access = 1 if access_road == 24
+###      : replace highest_access = 0 if access_road != 24
+house <- house %>%
+  mutate(highest_access = ifelse(access_road == 24,1,0))
+
 
 ### Stata: table high_access
 house %>% count(high_access)
 
-# Stata: gen crime100 = crime_rate * 100
-#        gen teach_crime = crime100 / ptratio
+
+### Stata: gen crime100 = crime_rate * 100
+###        gen teach_crime = crime100 / ptratio
 house <- house %>%
   mutate(crime100 = crime_rate * 100,
          teach_crime = crime100 / ptratio)
@@ -124,17 +124,21 @@ house <- house %>%
 
 
 # dplyr::select
-# Stata: drop distance
+### Stata: drop distance
 house <- house %>% 
   select(-distance)
 # "keep distance" in Stata is w/o minus sign, "select(distance)"
 
-# Stata: keep crime_rate business river
+
+### Stata: keep crime_rate business river
 house1 <- house %>%
   select(crime_rate, business, river)
 
-View(house1)
 
+# dplyr::filter
+### Stata: keep access_road == 4
+house2 <- house %>%
+  filter(access_road == 4)
 
 
 
@@ -149,17 +153,38 @@ library(missForest)
 set.seed(123)
 
 # 10% of obs will be replaced by NA (missing)
-house <- missForest::prodNA(house, noNA = 0.1)
+house <- missForest::prodNA(house.renamed, noNA = 0.1)
 
 # we see that complete_rate is now about 90%
 skim(house)
 
 
+### Stata: drop crime_rate == "NA"
+house <- house %>%
+  dplyr::filter(crime_rate != "NA")
+
+
+# re-create missing values in house.renamed data
+set.seed(123)
+house <- missForest::prodNA(house.renamed, noNA = 0.1)
+
+
 # dplyr::mutate_at
-# Stata: impute is the similar command 
-# impute all variables instead of river
-# "0302_data_management.R" shows more examples
+### Stata: impute is the similar command but not exactly the same
+# impute all variables except river
+# ("0302_data_management.R" shows more examples)
 house <- house %>%
   mutate_at(vars(-river),
             funs(if_else(is.na(.), mean(., na.rm = T), .)))
 
+class(house$river)
+# because river is  factor variable, we need to covert it into numeric
+house <- house %>% 
+  dplyr::mutate(river = as.numeric(as.character(river)))
+
+# (sometimes) when factor variable is converted into numeric, [0,1] variable becomes [1,2]. 
+# to account for this problem, we first convert variable into character, then convert to numeric. 
+
+house <- house %>%
+  mutate_at(vars(river),
+            funs(if_else(is.na(.), mean(., na.rm = T), .)))
