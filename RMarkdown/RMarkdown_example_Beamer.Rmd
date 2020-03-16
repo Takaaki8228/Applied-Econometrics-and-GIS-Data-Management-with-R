@@ -1,5 +1,5 @@
 ---
-title: \textbf{\Large A and B Evidence from C} \medskip
+title: \textbf{\Large Title} \medskip
 author: \Large Your Name
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 fontsize: 9.5pt
@@ -66,69 +66,35 @@ knitr::opts_chunk$set(echo = FALSE)
 
 - There are numerous ways to change the style in Beamer^[footnote is also available]. 
 
-- For example, this website introduces several themes. 
+- For example, this website introduces several themes (http://deic.uab.es/~iblanes/beamer_gallery/). 
 
 
 ---
 
 ## Background: Historical development in Japan
 
-- Japan's history is [@Donaldson2016].
+- Nighttime lights data has been a common proxy variable for economic activity of specific geographic areas, particularly in developing countries [@Donaldson2016].
 
 
 ---
 
+## Data
 
+@Greenstone2015
 
 
 --- 
 
-## Econometric Model (tentative) {.allowframebreaks}
+## Econometric Model
 
-- Fixed effects regression: at the province level to control for time- and cluster-invariant trends. 
 $$
-Y_{itj} = \beta_0 + \sum_{c=-2}^{2} \beta_c loss_{tj} + \gamma X1_{itj} + \theta X2_{0j} \times D_t + \alpha_t + \alpha_j + \epsilon_{itj}
+y_{ijt} = \alpha + \beta loss_{ijt} + \gamma X_{ijt} + \delta_j + \mu_t + u_{ijt}
 $$
 
-- \small $Y_{itj}$ refers to a health outcome for child $i$ in DHS year $t$ in cluster $j$ (HAZ or incidence of dengue)
+- $y_{ijt}$: health outcome for child $i$ in subdistrict $j$in year $t$
 
-- \small Forest loss is defined as a change from a forest to non-forest state, as either 1 (loss) or 0 (no loss)
+- and so on.
 
-- \small There are five forest loss variables: forest loss two years before birth ($loss-2$), one years before birth ($loss-1$), in child's year of birth ($loss0$), one year after birth ($loss+1$), and two year after birth ($loss+2$)
-
-- \small $\beta_c$ provides estimates of the effect of forest loss for two year before and two year after child's year of birth.
-
-- \small $X1_{itj}$ is a vector of control variables that affect to health outcome. 
-
-- \small $X2_{0j}$ is a vector of cluster-level variables at the initial period. 
-
-- \small $D_{t}$ is a time dummy.
-
-- \small $X2_{0j} \times D_t$ allow clusters with different initial values to have different time trends. 
-
-- \small $\epsilon_{itj}$ is the error term.
-
----
-
-## Future Research 
-
-- Get Landsat (forest loss) data and calculate the annual forest loss for each DHS cluster among the periods. 
-
-- Combine them with DHS datasets.
-
-
---- 
-
-## Future Research, ctd
-
-- Given that location of forest loss is potentially nonrandom and confounding economic trends may be associated with health outcomes. 
-
-- For example, economic development and urbanization in particular have also been linked to deforestation [@Greenstone2015].
-
-- Nighttime light from cities or towns have been found to be a proxy for economic activity (if data quality is low) [@Donaldson2016].
-
-
----
 
 
 
