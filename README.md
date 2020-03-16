@@ -1,6 +1,6 @@
 # Applied Econometrics and GIS Data Management with R
 
-This is the repository for the GIS and basic data management with R::tidyverse and Stata. 
+This is the repository for the GIS and basic data management with R. 
 
 ## Contents
 
