@@ -1,25 +1,72 @@
 ---
-title: 'Example'
-author: "Mariam Tanou"
+title: 'Title'
+subtitle: "Subtitle"
+author: "Your Name"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
-output: pdf_document
+output: 
+  pdf_document:
+    toc: true
+    toc_depth: 2
+    number_sections: true
+    fig_caption: true
+    citation_package: natbib
+bibliography: /Users/takaaki/Documents/GitHub/gis-data/RMarkdown/reference.bib
+biblio-style: apa
+link-citations: yes
+fontsize: 11pt
+classoption: a4paper
+header-includes:
+  \usepackage{url}
 ---
 
 ```{r setup, include=FALSE}
 source('~/documents/GitHub/gis-data/R_Econometrics/.Rprofile')
 ```
 
-# Title (level 1)
+# Section 1 (level 1)
 
-This section we... 
+In this section, we... 
 
-## Title (level 2)
+## Subsection (level 2)
 
-This subsection we...
+In this subsection, we...
 
-First we conduct regression without specifying the types of the standard error. 
+### Sub-subsection (level 3)
 
-### Set Up Data
+In this sub-subsection, we...
+
+The symbol \# makes the section title. Depending on the number of \#, you can create different levels of sections. 
+
+
+
+# Background
+
+## History of Japan
+
+In this subsection, we...
+
+
+
+# Citation
+
+You can cite articles such as papers and reports using bibtex. If you save the reference called Greenstone2015, put this name after \@. For example, \@Greenstone2015 can produce the following: @Greenstone2015. If you use brackets [], it creates [@Donaldson2016]. Finally, when you want to cite multiple articles, sepalate the names using ;. It produces the following [@Greenstone2015; @Donaldson2016].
+
+
+Note that you have to specify the citation style in the preamble of the Rmd. See this files preamble. 
+
+
+
+# .Rprofile
+
+.Rprofile can be executed by `source` with `include=FALSE` without showing the results in the output (like PDF). In this file I put the file path just after the preamble. It is very useful to run multiple `library` thet you often use. 
+
+
+
+# Regression
+
+We conduct regression without specifying the types of the standard error. 
+
+## Set Up Data
 ```{r}
 data(CASchools)   
 
@@ -74,3 +121,42 @@ summary(fit3)
 
 We estimated the same model as fit2, but clustered SE at the county level (we do not know whether this is the best unit). Clustered SE for STR increased from 0.277 to 0.299. 
 
+
+## (Automatically) Create Regression Tables
+
+Like `outreg2` in Stata, there are several ways to create tables in R using latex. You can also make tables in the MS Word file if you speficy in the preamble. The most popular one is `stargazer`, but in some situations `texreg` and `Hmisc` are more convenient. 
+
+
+## Produce the Regression Table (with `stargazer`)
+```{r, results='asis', message=FALSE, warning=FALSE}
+# Define removed unnecessary variables from the table
+
+# Define the row names
+label_regressors <- c("Student Teacher Ratio", "English Score", "Parents Income")
+
+stargazer(fit1, fit2,
+          se = starprep(fit1, fit2,
+                        clusters = CASchools$county, 
+                        se_type = "stata"),
+          title = "OLS estimation", 
+          dep.var.caption = "",
+          dep.var.labels = "Dependent Variable Name Here",
+          covariate.labels = label_regressors,
+          omit.stat = c("adj.rsq", "f", "ser"),
+          notes.append = FALSE, 
+          # single.row = TRUE,
+          digits = 4, 
+          notes = "",
+          notes.align = "c",
+          # align = T,
+          no.space = T,
+          add.lines = list(
+            c("Log of population", "", "Yes"),
+            c("Temperature", "", "Yes"),
+            c("Demographic characteristic", "Yes", "Yes"),
+            c("Household wealth", "Yes", "Yes")),
+          # table.layout ="-n",
+          # font.size = "scriptsize"
+          header = FALSE
+          )
+```

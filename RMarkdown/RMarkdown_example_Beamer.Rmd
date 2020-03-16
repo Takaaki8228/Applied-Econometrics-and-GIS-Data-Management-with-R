@@ -1,0 +1,136 @@
+---
+title: \textbf{\Large A and B Evidence from C} \medskip
+author: \Large Your Name
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+fontsize: 9.5pt
+output:
+  beamer_presentation:
+    theme: "default"
+    colortheme: "seahorse"
+    fonttheme: "professionalfonts"
+    slide_level: 2
+    toc: false
+    includes:
+      # in_header: /users/takaaki/Documents/GSICS_paper/header_pagenrs.tex
+bibliography: /Users/takaaki/Documents/GitHub/gis-data/RMarkdown/reference.bib
+biblio-style: apalike
+link-citations: yes
+header-includes:
+  - \newcommand{\bsmall}{\begin{small}}
+  - \newcommand{\esmall}{\end{small}}
+  - \newcommand{\blarge}{\begin{large}}
+  - \newcommand{\elarge}{\end{large}}
+  - \usepackage{longtable}
+  - \widowpenalties 1 150 # {.allowframebreaks}
+  - \usepackage{etoolbox} 
+  - \makeatletter 
+  - \preto{\@verbatim}{\topsep=-10pt \partopsep=-10pt } 
+  - \makeatother
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+---
+
+## Outline
+
+\large
+
+1. Introduction
+
+2. Background 
+
+3. Data
+
+4. Empirical strategy
+      
+5. Results
+
+6. References
+
+
+----
+
+## Introduction
+
+- Creating slides using Beamer look difficult but actually simple and easy. 
+
+- Another advantage is that we can save time organizing font size, style, etc. 
+
+
+---
+
+## Background
+
+- There are numerous ways to change the style in Beamer^[footnote is also available]. 
+
+- For example, this website introduces several themes. 
+
+
+---
+
+## Background: Historical development in Japan
+
+- Japan's history is [@Donaldson2016].
+
+
+---
+
+
+
+
+--- 
+
+## Econometric Model (tentative) {.allowframebreaks}
+
+- Fixed effects regression: at the province level to control for time- and cluster-invariant trends. 
+$$
+Y_{itj} = \beta_0 + \sum_{c=-2}^{2} \beta_c loss_{tj} + \gamma X1_{itj} + \theta X2_{0j} \times D_t + \alpha_t + \alpha_j + \epsilon_{itj}
+$$
+
+- \small $Y_{itj}$ refers to a health outcome for child $i$ in DHS year $t$ in cluster $j$ (HAZ or incidence of dengue)
+
+- \small Forest loss is defined as a change from a forest to non-forest state, as either 1 (loss) or 0 (no loss)
+
+- \small There are five forest loss variables: forest loss two years before birth ($loss-2$), one years before birth ($loss-1$), in child's year of birth ($loss0$), one year after birth ($loss+1$), and two year after birth ($loss+2$)
+
+- \small $\beta_c$ provides estimates of the effect of forest loss for two year before and two year after child's year of birth.
+
+- \small $X1_{itj}$ is a vector of control variables that affect to health outcome. 
+
+- \small $X2_{0j}$ is a vector of cluster-level variables at the initial period. 
+
+- \small $D_{t}$ is a time dummy.
+
+- \small $X2_{0j} \times D_t$ allow clusters with different initial values to have different time trends. 
+
+- \small $\epsilon_{itj}$ is the error term.
+
+---
+
+## Future Research 
+
+- Get Landsat (forest loss) data and calculate the annual forest loss for each DHS cluster among the periods. 
+
+- Combine them with DHS datasets.
+
+
+--- 
+
+## Future Research, ctd
+
+- Given that location of forest loss is potentially nonrandom and confounding economic trends may be associated with health outcomes. 
+
+- For example, economic development and urbanization in particular have also been linked to deforestation [@Greenstone2015].
+
+- Nighttime light from cities or towns have been found to be a proxy for economic activity (if data quality is low) [@Donaldson2016].
+
+
+---
+
+
+
+## References {.allowframebreaks}
+
