@@ -30,8 +30,8 @@ names(house)
 
 ### Stata: table chas
 # dplyr::count
-house %>% count(chas)
-house %>% count(rad)
+house %>% dplyr::count(chas)
+house %>% dplyr::count(rad)
 
 ### Stata: sum house
 # skimr::skim
@@ -44,10 +44,10 @@ skim(house, age, dis, ptratio)
 
 # dplyr::summarise
 house %>%
-  summarise(age = mean(age),
-            ptratio = sd(ptratio),
-            observation = dplyr::n()
-            )
+  dplyr::summarise(age = mean(age),
+                   ptratio = sd(ptratio),
+                   observation = dplyr::n()
+                   )
 
 
 # dplyr::summarise_each
@@ -84,14 +84,14 @@ house %>%
 ### rename zn resi_land
 # and so on
 house <- house %>%
-  rename(crime_rate = crim,
-         resi_land = zn,
-         business = indus,
-         river = chas,
-         ave_room = rm, 
-         distance = dis,
-         access_road = rad, 
-         race = b)
+  dplyr::rename(crime_rate = crim,
+                resi_land = zn,
+                business = indus,
+                river = chas,
+                ave_room = rm, 
+                distance = dis,
+                access_road = rad, 
+                race = b)
 
 house.renamed <- house  # save as new name for the next practice 
 
@@ -111,7 +111,7 @@ house <- house %>%
 
 
 ### Stata: table high_access
-house %>% count(high_access)
+house %>% dplyr::count(high_access)
 
 
 ### Stata: gen crime100 = crime_rate * 100
@@ -126,21 +126,23 @@ house <- house %>%
 # dplyr::select
 ### Stata: drop distance
 house <- house %>% 
-  select(-distance)
+  dplyr::select(-distance)
 # "keep distance" in Stata is w/o minus sign, "select(distance)"
 
 
 ### Stata: keep crime_rate business river
 house1 <- house %>%
-  select(crime_rate, business, river)
+  dplyr::select(crime_rate, business, river)
 
 
 # dplyr::filter
 ### Stata: keep access_road == 4
 house2 <- house %>%
-  filter(access_road == 4)
+  dplyr::filter(access_road == 4)
 
-
+### Stata: keep if crime_rate > 0.2 & crime_rate < 0.4
+house2 <- house %>%
+  dplyr::filter(crime_rate > 0.2, crime_rate < 0.4)
 
 
 # --------------------------------------------
