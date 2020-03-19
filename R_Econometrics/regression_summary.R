@@ -58,6 +58,7 @@ stargazer(reg1, reg2, reg3, type = "text")
 data(card.data)
 card <- card.data
 
+# fixed effect
 reg4 <- felm(lwage ~ educ + exper + expersq + black + smsa + south | region, data = card) 
 # cluster-robust standard error
 reg5 <- felm(lwage ~ educ + exper + expersq + black + smsa + south | region | 0 | region, data = card) 
@@ -100,7 +101,7 @@ reg3 <- ivreg(lnw ~ s | qob.f4, data = qob)
 reg4 <- lm(lnw ~ s, data=qob)
 reg5 <- ivreg(lnw ~ s + yob | qob.f4 + yob, data = qob)
 
-summary(reg3)
+summary(reg5)
 
 # estimatr::iv_robust estimates an iv regression 
 # using 2SLS with robust standard errors.
