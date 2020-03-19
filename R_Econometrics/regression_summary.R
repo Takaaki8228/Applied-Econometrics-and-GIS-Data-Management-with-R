@@ -83,6 +83,9 @@ qob <- haven::read_dta("ak91.dta")
 
 # make qob dummies
 qob.f <- factor(qob$qob)
+
+# model.matrix automatically converts factor into 
+# a dummy variable (decomposed into separate columns)
 q <- model.matrix(~qob.f + 0)
 qob <- cbind(qob,q)
 
@@ -106,7 +109,6 @@ summary(reg3)
 # iv1 <- iv_robust(y ~ x1 + x2 + x3 | z + x2 + x3,
 #                  clusters = cluster, se_type = "CR0", 
 #                  data = your_data)
-
 
 iv1 <- iv_robust(lnw ~ s | qob.f4, 
                  se_type = "stata",

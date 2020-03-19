@@ -98,5 +98,27 @@ $$
 
 
 
+--- 
+
+```{r}
+library(wooldridge)
+library(lfe)
+library(stargazer)
+wage <- wooldridge::wagepan
+```
+
+--- 
+
+```{r}
+reg1 <- lm(lwage ~ union, data = wage) 
+reg2 <- lm(lwage ~ union + educ + black + hisp + exper + expersq + married, data = wage)
+reg3 <- felm(lwage ~ union + expersq + married | nr + year, data = wage)
+
+stargazer(reg1, reg2, reg3, type = "text",
+          single.row = TRUE,
+          column.sep.width = "1pt")
+```
+
+
 ## References {.allowframebreaks}
 
