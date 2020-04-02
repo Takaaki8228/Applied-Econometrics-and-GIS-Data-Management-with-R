@@ -8,3 +8,4 @@ This is the repository for the GIS and basic data management with R.
 - maping_burkina_faso: Focus on GIS data: mapping and management using R
 - R_Econometrics: Basic data management using dplyr and regression using estimatr
 - RMarkdown: How to write a paper and make presentation slides (beamer) using Rmarkdown
+- Oster_2019_Bound_Estimation: How to test a coefficient stability using psacalc developed by Oster (2019)
