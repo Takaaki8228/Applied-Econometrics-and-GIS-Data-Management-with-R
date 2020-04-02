@@ -2,19 +2,24 @@
 
 	Oster (2019)
 	self-replication 
+	
+	Go to https://emilyoster.net/research
+	First, click "Replication File" to download the data 
+	from "Unobservable Selection and Coefficient Stability: Theory and Validation"
+	
+	We use DataAnalysis/derived/output/NLSY_for_IQ.dta (and NLSY_for_BW.dta)
+	The results from this data is reported in Table 3 of Oster (2019)
 
 */
 
 clear
 set more off
+cap program drop _all
 
 global localpath /Users/Takaaki/Documents/Econometrics/Oster2019/DataAnalysis
 cd $localpath
 
-* global codepath "./analysis/code"
-* global outputfilename "./analysis/output"
 global inputfilename "./derived/output"
-* global tempfilename "./temp"
 
 
 *****************************************************************
@@ -75,7 +80,7 @@ psacalc beta BF_months, mcontrol("$always_control") rmax(.61) delta(1)
 /*
 
 	Note on Row 1: 
-	1. bias-adjusted treatment effect is in (Beta, Estimate) in - Treatment Effect Estimate -
+	1. bias-adjusted treatment effect (-0.03294) is in (Beta, Estimate) in - Treatment Effect Estimate -
 	2. identified set is (bias-adjusted treatment effect, controlled effect)
 	
 */
@@ -96,8 +101,12 @@ reg iq_std mom_drink_preg_all $always_control
 reg iq_std mom_drink_preg_all $always_control $fullcontrols	
 psacalc beta mom_drink_preg_all, mcontrol("$always_control") rmax(.61) delta(1)
 
+/*
+	
+	Note on Row 2: 
+	-0.14677 is the bias-adjusted treatment effect
 
-
+*/
 
 
 * row 3 of Table 3 
@@ -119,6 +128,7 @@ psacalc beta lbw_preterm, mcontrol("$always_control") rmax(.61) delta(1)
 					  (-0.125           , -0.033						)
 	
 	This identified set (bounding set) does not include zero!
+	Lead to conclude that the coefficient of interest is very unlikely driven by unobservables!
 	
 */
 
@@ -142,7 +152,11 @@ reg birth_wt any_smoke $always_control $fullcontrols
 * sub_idset birth_wt any_smoke .53
 psacalc beta any_smoke, mcontrol("$always_control") rmax(.53) delta(1)
 
+/*
 
+	-31.23816 is the bias-adjusted treatment effect
+
+*/
 
 
 
@@ -158,6 +172,11 @@ reg birth_wt mom_drink_preg_cont $always_control $fullcontrols
 * sub_idset birth_wt mom_drink_preg_cont .53
 psacalc beta mom_drink_preg_cont, mcontrol("$always_control") rmax(.53) delta(1)
 
+/*
+
+	0.49633 is the bias-adjusted treatment effect
+
+*/
 
 
 
@@ -168,11 +187,3 @@ psacalc beta mom_drink_preg_cont, mcontrol("$always_control") rmax(.53) delta(1)
 
 
 
-********
-
-scalar adj_beta = -0.12 - (1.19 - (-0.12)) * ((1 - 0.825) / 0.825 - 0.24)
-disp adj_beta
-
-
-scalar betaf95=beta_tilde-(beta_c-beta_tilde)*((0.95-R_tilde)/(R_tilde-R_c))
-disp betaf95
