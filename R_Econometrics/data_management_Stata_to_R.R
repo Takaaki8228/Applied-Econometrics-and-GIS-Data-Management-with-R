@@ -44,8 +44,8 @@ skim(house, age, dis, ptratio)
 
 # dplyr::summarise
 house %>%
-  dplyr::summarise(age = mean(age),
-                   ptratio = sd(ptratio),
+  dplyr::summarise(age_m = mean(age),
+                   age_sd = sd(age),
                    observation = dplyr::n()
                    )
 
